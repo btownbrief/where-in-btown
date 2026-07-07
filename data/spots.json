@@ -1,0 +1,742 @@
+[
+ {
+  "file": "photos/flynn.jpg",
+  "lat": 44.47573,
+  "lng": -73.21334,
+  "name": "The Flynn",
+  "hint": "The 1930 art-deco marquee that anchors lower Main Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Flynn_Theatre_marquee_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/city-hall.jpg",
+  "lat": 44.47638,
+  "lng": -73.21261,
+  "name": "Burlington City Hall",
+  "hint": "Brick-and-marble 1928 McKim, Mead & White civic pile at the bottom of the Marketplace.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:City_Hall_Burlington_Vermont_from_northeast_on_Church_Street.jpg"
+ },
+ {
+  "file": "photos/firehouse-gallery.jpg",
+  "lat": 44.47663,
+  "lng": -73.21253,
+  "name": "BCA Center (old Firehouse)",
+  "hint": "Ethan Allen Engine Co. No. 4 rolled out of here; art hangs here now.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ethan_Allen_Engine_Company_No._4_Burlington_Vermont_from_Church_Street.jpg"
+ },
+ {
+  "file": "photos/old-post-office.jpg",
+  "lat": 44.4758,
+  "lng": -73.21225,
+  "name": "Old Post Office & Custom House",
+  "hint": "Granite federal building at Main & Church, from 1906.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:United_States_Post_Office_and_Custom_House_Burlington_Vermont_from_west.jpg"
+ },
+ {
+  "file": "photos/fletcher-free.jpg",
+  "lat": 44.47705,
+  "lng": -73.21042,
+  "name": "Fletcher Free Library",
+  "hint": "Carnegie-funded and nearly lost to a sinking foundation in the 1970s.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fletcher_Free_Library_Burlington_Vermont_entrance.jpg"
+ },
+ {
+  "file": "photos/memorial-auditorium.jpg",
+  "lat": 44.4761,
+  "lng": -73.2088,
+  "name": "Memorial Auditorium",
+  "hint": "Built 1928 to honor WWI dead; shuttered since 2016 and still argued about.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Memorial_Auditorium_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/chittenden-trust.jpg",
+  "lat": 44.4769,
+  "lng": -73.21255,
+  "name": "123 Church Street",
+  "hint": "A 1928 bank temple turned Marketplace storefront.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chittenden_County_Trust_Company_Building_123_Church_Street_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/church-st-south.jpg",
+  "lat": 44.4781,
+  "lng": -73.2126,
+  "name": "Church Street at Bank",
+  "hint": "Middle block of the Marketplace, looking toward City Hall.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Church_Street_Marketplace_Burlington_Vermont_looking_south_from_Bank_Street.jpg"
+ },
+ {
+  "file": "photos/church-st-autumn.jpg",
+  "lat": 44.4791,
+  "lng": -73.2126,
+  "name": "Upper Church Street",
+  "hint": "Top block of the Marketplace in peak foliage.",
+  "license": "CC BY-SA 4.0",
+  "author": "Sdkb",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Church_Street_Marketplace_in_autumn.jpg"
+ },
+ {
+  "file": "photos/henrys-diner.jpg",
+  "lat": 44.478,
+  "lng": -73.2135,
+  "name": "Henry's Diner",
+  "hint": "Slinging eggs on Bank Street since 1925.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Henry%27s_Diner_-_Burlington,_Vermont.jpg"
+ },
+ {
+  "file": "photos/ben-jerrys.jpg",
+  "lat": 44.47935,
+  "lng": -73.2126,
+  "name": "Ben & Jerry's",
+  "hint": "The scoop shop near where it all started (the real first one was a gas station down the hill).",
+  "license": "CC BY 4.0",
+  "author": "G. Edward Johnson",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ben_and_Jerrys_Church_St_Burlington_VT_2025-04-14_17-05-07.jpg"
+ },
+ {
+  "file": "photos/leunigs.jpg",
+  "lat": 44.4771,
+  "lng": -73.213,
+  "name": "Leunig's Bistro",
+  "hint": "Parisian-ish corner café at Church & College.",
+  "license": "CC BY 4.0",
+  "author": "G. Edward Johnson",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leunigs_Bistro_front_Burlington_VT_2025-04-14_16-57-16.jpg"
+ },
+ {
+  "file": "photos/rira.jpg",
+  "lat": 44.47692,
+  "lng": -73.21258,
+  "name": "Rí Rá Irish Pub",
+  "hint": "Guinness in a former bank building on the Marketplace.",
+  "license": "CC BY 4.0",
+  "author": "G. Edward Johnson",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:RiRa_Irish_Pub_front_Burlington_VT_2025-04-13_20-27-52_1.jpg"
+ },
+ {
+  "file": "photos/homeport.jpg",
+  "lat": 44.4787,
+  "lng": -73.2126,
+  "name": "Homeport",
+  "hint": "The kitchen-and-everything-else store, a Church Street fixture since 1977.",
+  "license": "CC BY 4.0",
+  "author": "G. Edward Johnson",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Homeport_Church_St_Burlington_Vt_2025-04-14_17-03-30.jpg"
+ },
+ {
+  "file": "photos/cvs-church.jpg",
+  "lat": 44.4792,
+  "lng": -73.2127,
+  "name": "CVS on Church Street",
+  "hint": "Even the chain drugstore gets a historic brick facade here.",
+  "license": "CC BY 4.0",
+  "author": "Harrison Keely",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_CVS_Pharmacy_on_Church_Street_in_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/unitarian-church.jpg",
+  "lat": 44.4808,
+  "lng": -73.2126,
+  "name": "First Unitarian Universalist",
+  "hint": "The 1816 meeting house that closes the view up Church Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Unitarian_Church_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/masonic-temple.jpg",
+  "lat": 44.4802,
+  "lng": -73.2131,
+  "name": "Masonic Temple",
+  "hint": "Fortress-y 1898 landmark at Church & Pearl.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Masonic_Temple_-_Burlington,_Vermont.jpg"
+ },
+ {
+  "file": "photos/richardson-building.jpg",
+  "lat": 44.4805,
+  "lng": -73.2129,
+  "name": "Richardson Building",
+  "hint": "Ornate 1895 department-store block at Church & Cherry.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Richardson_Building_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/radio-bean.jpg",
+  "lat": 44.48085,
+  "lng": -73.2112,
+  "name": "Radio Bean",
+  "hint": "Coffee, tiny stages, and late nights on North Winooski.",
+  "license": "CC BY 4.0",
+  "author": "Artaxerxes",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Radio_Bean_8_North_Winooski_Avenue_downtown_Burlington_VT_July_2025_01.jpg"
+ },
+ {
+  "file": "photos/other-place.jpg",
+  "lat": 44.4807,
+  "lng": -73.2111,
+  "name": "The Other Place",
+  "hint": "The neighborhood dive next door to the Bean.",
+  "license": "CC BY 4.0",
+  "author": "Artaxerxes",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Other_Place_4_North_Winooski_Avenue_downtown_Burlington_VT_July_2025_01.jpg"
+ },
+ {
+  "file": "photos/first-baptist.jpg",
+  "lat": 44.4777,
+  "lng": -73.2147,
+  "name": "First Baptist Church",
+  "hint": "1864 brick steeple on St. Paul Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:First_Baptist_Church_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/immaculate-conception.jpg",
+  "lat": 44.4797,
+  "lng": -73.2149,
+  "name": "Former Immaculate Conception Cathedral",
+  "hint": "The modernist 1977 cathedral and its famous grove of locust trees.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Former_Immaculate_Conception_Cathedral_-_Burlington_01.jpg"
+ },
+ {
+  "file": "photos/st-pauls.jpg",
+  "lat": 44.4798,
+  "lng": -73.2184,
+  "name": "Cathedral Church of St. Paul",
+  "hint": "Brutalist Episcopal cathedral rebuilt after the 1971 fire.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cathedral_Church_of_St._Paul_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/hotel-vermont.jpg",
+  "lat": 44.479,
+  "lng": -73.2175,
+  "name": "Hotel Vermont",
+  "hint": "Cherry Street boutique hotel, very Vermont about it.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hotel_Vermont.jpg"
+ },
+ {
+  "file": "photos/costello-courthouse.jpg",
+  "lat": 44.4794,
+  "lng": -73.217,
+  "name": "Costello Courthouse",
+  "hint": "Where Chittenden County goes to court, on Cherry Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Judge_Edward_J._Costello_Courthouse.jpg"
+ },
+ {
+  "file": "photos/transit-center.jpg",
+  "lat": 44.4798,
+  "lng": -73.2143,
+  "name": "Downtown Transit Center",
+  "hint": "Every GMT route in the county funnels through here.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Downtown_Transit_Center_-_Burlington,_Vermont.jpg"
+ },
+ {
+  "file": "photos/zampieri-building.jpg",
+  "lat": 44.4795,
+  "lng": -73.214,
+  "name": "Zampieri State Office Building",
+  "hint": "The state government’s downtown outpost on Pearl Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:John_J._Zampieri_State_Office_Building.jpg"
+ },
+ {
+  "file": "photos/hundred-bank.jpg",
+  "lat": 44.4783,
+  "lng": -73.2156,
+  "name": "100 Bank Street",
+  "hint": "One of the few things downtown you could call a high-rise.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:100_Bank_Street_-_Burlington,_Vermont.jpg"
+ },
+ {
+  "file": "photos/wells-richardson.jpg",
+  "lat": 44.477,
+  "lng": -73.2154,
+  "name": "Wells-Richardson Building",
+  "hint": "A patent-medicine fortune built this College Street block.",
+  "license": "CC BY 4.0",
+  "author": "G. Edward Johnson",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wells-Richardson_building_Burlington_VT_2025-04-13_18-35-35_1_(cropped).jpg"
+ },
+ {
+  "file": "photos/the-nest.jpg",
+  "lat": 44.4779,
+  "lng": -73.2156,
+  "name": "The Nest (CityPlace)",
+  "hint": "The tower that finally rose out of the famous pit.",
+  "license": "CC0",
+  "author": "MrFib",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Nest_Burlington_2025_(cropped).jpg"
+ },
+ {
+  "file": "photos/decker-towers.jpg",
+  "lat": 44.4731,
+  "lng": -73.2136,
+  "name": "Decker Towers",
+  "hint": "Vermont’s tallest building, an 11-story housing high-rise.",
+  "license": "CC0",
+  "author": "MrFib",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Decker_Towers_Burlington_VT_2025.jpg"
+ },
+ {
+  "file": "photos/armory.jpg",
+  "lat": 44.4759,
+  "lng": -73.2157,
+  "name": "The Armory",
+  "hint": "Castle-ish 1905 drill hall on lower Main Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Armory_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/edmunds.jpg",
+  "lat": 44.476,
+  "lng": -73.2087,
+  "name": "Edmunds School",
+  "hint": "The grand 1900 school building up Main Street hill.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Edmunds_School_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/college-st-church.jpg",
+  "lat": 44.477,
+  "lng": -73.2093,
+  "name": "College Street Congregational",
+  "hint": "Red-brick 1866 church with the green steeple.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:College_Street_Congregational_Church_01.jpg"
+ },
+ {
+  "file": "photos/first-congregational.jpg",
+  "lat": 44.4794,
+  "lng": -73.2105,
+  "name": "First Congregational Church",
+  "hint": "The 1842 columned meetinghouse on South Winooski.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:First_Congregational_Church_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/first-methodist.jpg",
+  "lat": 44.4787,
+  "lng": -73.2105,
+  "name": "First United Methodist",
+  "hint": "Stone church at Buell and South Winooski.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:First_United_Methodist_Church_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/poco.jpg",
+  "lat": 44.4756,
+  "lng": -73.2174,
+  "name": "Poco",
+  "hint": "Small plates at the bottom of Main Street.",
+  "license": "CC BY 4.0",
+  "author": "Artaxerxes",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Restaurant_Poco_55_Main_Street_downtown_Burlington_VT_June_2025.jpg"
+ },
+ {
+  "file": "photos/follett-house.jpg",
+  "lat": 44.4767,
+  "lng": -73.218,
+  "name": "Follett House",
+  "hint": "Greek Revival mansion staring down the lake from College Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Follett_House_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/union-station.jpg",
+  "lat": 44.4757,
+  "lng": -73.2191,
+  "name": "Union Station",
+  "hint": "The 1916 beaux-arts depot at the foot of Main — wings on the roof.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Union_Station_Burlington_Vermont_central_section.jpg"
+ },
+ {
+  "file": "photos/main-street-landing.jpg",
+  "lat": 44.4772,
+  "lng": -73.2193,
+  "name": "Main Street Landing",
+  "hint": "Colorful waterfront arts building on Lake Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Beyond My Ken",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Main_Street_Landing_Performing_Arts_Center_Burlington_Vermont.jpg"
+ },
+ {
+  "file": "photos/skinny-pancake.jpg",
+  "lat": 44.477,
+  "lng": -73.2197,
+  "name": "Skinny Pancake",
+  "hint": "Crêpes by the waterfront.",
+  "license": "CC BY 4.0",
+  "author": "G. Edward Johnson",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Skinny_Pancake_restaurant_front_Burlington_VT_2025-04-14_16-42-39_1.jpg"
+ },
+ {
+  "file": "photos/spirit-of-ethan-allen.jpg",
+  "lat": 44.4767,
+  "lng": -73.2219,
+  "name": "Spirit of Ethan Allen III",
+  "hint": "The lake cruise boat at its Burlington Boathouse dock.",
+  "license": "CC BY 2.0",
+  "author": "Tony Hisgett from Birmingham, UK",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Spirit_of_Ethan_Allen_III_(6237255092).jpg"
+ },
+ {
+  "file": "photos/battery-park.jpg",
+  "lat": 44.4806,
+  "lng": -73.2197,
+  "name": "Battery Park",
+  "hint": "Cannons fired at the British from this bluff in 1813.",
+  "license": "CC BY-SA 4.0",
+  "author": "Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:BTV_BatteryPark_20151118.jpg"
+ },
+ {
+  "file": "photos/grey-lock.jpg",
+  "lat": 44.4817,
+  "lng": -73.2197,
+  "name": "Chief Grey Lock statue",
+  "hint": "The Abenaki war leader watches the lake from Battery Park.",
+  "license": "CC BY-SA 4.0",
+  "author": "Sculptor: Peter Wolf Toth / Photo: Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chief_Grey_Lock_Sculpture_BTV_20060128.jpg"
+ },
+ {
+  "file": "photos/waterfront-park.jpg",
+  "lat": 44.4789,
+  "lng": -73.2214,
+  "name": "Waterfront Park",
+  "hint": "Rail yard turned festival lawn on Lake Champlain.",
+  "license": "CC BY 4.0",
+  "author": "Artaxerxes",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Burlington_Discover_Jazz_Festival_Waterfront_Park_Burlington_VT_June_2025_01.jpg"
+ },
+ {
+  "file": "photos/st-joseph.jpg",
+  "lat": 44.4832,
+  "lng": -73.2146,
+  "name": "St. Joseph Co-Cathedral",
+  "hint": "The French-Canadian cathedral towering over Allen Street.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cathedral_of_Saint_Joseph_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/elmwood-cemetery.jpg",
+  "lat": 44.4837,
+  "lng": -73.2131,
+  "name": "Elmwood Cemetery",
+  "hint": "Burlington’s oldest burying ground, 1810.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elmwood_Cemetery_-_Burlington,_Vermont.jpg"
+ },
+ {
+  "file": "photos/north-street.jpg",
+  "lat": 44.4845,
+  "lng": -73.2197,
+  "name": "North Street",
+  "hint": "The Old North End’s main drag.",
+  "license": "CC BY-SA 3.0",
+  "author": "Mfwills",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:North_Street_HD_Burlington_01.JPG"
+ },
+ {
+  "file": "photos/ethan-allen-homestead.jpg",
+  "lat": 44.508,
+  "lng": -73.23,
+  "name": "Ethan Allen Homestead",
+  "hint": "Where the Green Mountain Boy actually lived, out in the Intervale.",
+  "license": "CC BY-SA 3.0",
+  "author": "Mfwills",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:EthanAllenHomestead.JPG"
+ },
+ {
+  "file": "photos/st-marks.jpg",
+  "lat": 44.5096,
+  "lng": -73.2492,
+  "name": "St. Mark’s",
+  "hint": "New North End parish way up North Avenue.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saint_Mark%27s_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/old-mill.jpg",
+  "lat": 44.4778,
+  "lng": -73.1988,
+  "name": "UVM Old Mill",
+  "hint": "UVM’s oldest building; Lafayette laid the cornerstone.",
+  "license": "CC BY-SA 4.0",
+  "author": "Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:UVM_OldMillBldgSW_20150703.jpg"
+ },
+ {
+  "file": "photos/morrill-hall.jpg",
+  "lat": 44.4764,
+  "lng": -73.1983,
+  "name": "UVM Morrill Hall",
+  "hint": "Named for the Vermont senator behind land-grant colleges.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Morrill_Hall.jpg"
+ },
+ {
+  "file": "photos/williams-hall.jpg",
+  "lat": 44.4785,
+  "lng": -73.199,
+  "name": "UVM Williams Hall",
+  "hint": "The gargoyle-adjacent Romanesque science hall on the Green.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Williams_Hall.jpg"
+ },
+ {
+  "file": "photos/billings-library.jpg",
+  "lat": 44.479,
+  "lng": -73.1991,
+  "name": "UVM Billings Library",
+  "hint": "H.H. Richardson designed this one — the fancy library.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Billings_Library.jpg"
+ },
+ {
+  "file": "photos/ira-allen-chapel.jpg",
+  "lat": 44.4798,
+  "lng": -73.1992,
+  "name": "Ira Allen Chapel",
+  "hint": "The campus chapel with the landmark brick tower.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Ira_Allen_Chapel.jpg"
+ },
+ {
+  "file": "photos/davis-center.jpg",
+  "lat": 44.4747,
+  "lng": -73.1965,
+  "name": "UVM Davis Center",
+  "hint": "The student center bridging Main Street and campus.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Davis_Center.jpg"
+ },
+ {
+  "file": "photos/royall-tyler.jpg",
+  "lat": 44.4774,
+  "lng": -73.1988,
+  "name": "Royall Tyler Theatre",
+  "hint": "UVM’s playhouse in a converted 1901 gym.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Royall_Tyler_Theatre.jpg"
+ },
+ {
+  "file": "photos/lafayette-statue.jpg",
+  "lat": 44.4804,
+  "lng": -73.2001,
+  "name": "Lafayette Statue",
+  "hint": "The Marquis himself, at the top of the UVM Green.",
+  "license": "CC0",
+  "author": "HeyTomek",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Vermont_Lafayette_Statue.jpg"
+ },
+ {
+  "file": "photos/converse-hall.jpg",
+  "lat": 44.4785,
+  "lng": -73.1944,
+  "name": "UVM Converse Hall",
+  "hint": "The Hogwarts-looking dorm on East Campus.",
+  "license": "CC BY-SA 4.0",
+  "author": "Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:UVM_ConverseHallFront_20150707.jpg"
+ },
+ {
+  "file": "photos/gutterson.jpg",
+  "lat": 44.4693,
+  "lng": -73.1942,
+  "name": "Gutterson Fieldhouse",
+  "hint": "Home ice of Catamount hockey since 1963.",
+  "license": "CC BY-SA 4.0",
+  "author": "Zachary Salman",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gutterson_Fieldhouse_on_March_29_2023.jpg"
+ },
+ {
+  "file": "photos/grasse-mount.jpg",
+  "lat": 44.4757,
+  "lng": -73.203,
+  "name": "Grasse Mount",
+  "hint": "Federal-style 1804 mansion partway up Main Street hill.",
+  "license": "CC BY-SA 4.0",
+  "author": "Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:UVM_GrasseMount_20160508.jpg"
+ },
+ {
+  "file": "photos/filing-cabinet.jpg",
+  "lat": 44.4557,
+  "lng": -73.217,
+  "name": "World’s Tallest Filing Cabinet",
+  "hint": "Bren Alvarez’s 38-drawer monument to bureaucratic delay.",
+  "license": "CC BY-SA 2.0",
+  "author": "Lorie Shaull from St Paul, United States",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:World%27s_tallest_filling_cabinet_sculpture_(15422823926).jpg"
+ },
+ {
+  "file": "photos/st-anthonys.jpg",
+  "lat": 44.4552,
+  "lng": -73.2144,
+  "name": "St. Anthony’s",
+  "hint": "Parish church at Flynn and Pine in the South End.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saint_Anthony%27s_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/christ-the-king.jpg",
+  "lat": 44.4636,
+  "lng": -73.2093,
+  "name": "Christ the King",
+  "hint": "Church and school off Shelburne Road.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Christ_the_King_-_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/treehouse.jpg",
+  "lat": 44.4529,
+  "lng": -73.2277,
+  "name": "Oakledge Treehouse",
+  "hint": "The universally accessible treehouse in Oakledge Park.",
+  "license": "CC BY-SA 4.0",
+  "author": "Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:BTV_ForeverYoungTreehouse_20081015.jpg"
+ },
+ {
+  "file": "photos/lakeside.jpg",
+  "lat": 44.4594,
+  "lng": -73.2208,
+  "name": "Lakeside neighborhood",
+  "hint": "Company housing built for Queen City Cotton workers.",
+  "license": "CC BY-SA 3.0",
+  "author": "Mfwills",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lakeside_Burlington_VT.jpg"
+ },
+ {
+  "file": "photos/btv-airport.jpg",
+  "lat": 44.4692,
+  "lng": -73.1548,
+  "name": "Burlington International Airport",
+  "hint": "BTV — technically in South Burlington, spiritually everywhere.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Burlington_International_Airport_01.jpg"
+ },
+ {
+  "file": "photos/sb-city-hall.jpg",
+  "lat": 44.4657,
+  "lng": -73.1773,
+  "name": "South Burlington City Hall",
+  "hint": "The new downtown South Burlington built for itself on Market Street.",
+  "license": "CC0",
+  "author": "SBVT Communications",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:South_Burlington_City_Hall,_180_Market_Street.jpg"
+ },
+ {
+  "file": "photos/st-john-vianney.jpg",
+  "lat": 44.4624,
+  "lng": -73.1701,
+  "name": "St. John Vianney",
+  "hint": "The A-frame church on Hinesburg Road.",
+  "license": "CC BY-SA 4.0",
+  "author": "Farragutful",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:St._John_Vianney_-_South_Burlington,_Vermont_01.jpg"
+ },
+ {
+  "file": "photos/st-francis-xavier.jpg",
+  "lat": 44.4966,
+  "lng": -73.1872,
+  "name": "St. Francis Xavier",
+  "hint": "Winooski’s twin-spired French-Canadian church.",
+  "license": "CC BY-SA 4.0",
+  "author": "Niranjan Arminius",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:StFrancisXavierChurch_20160903.jpg"
+ },
+ {
+  "file": "photos/welcome-winooski.jpg",
+  "lat": 44.5025,
+  "lng": -73.1821,
+  "name": "Welcome to Winooski",
+  "hint": "The Onion City announces itself.",
+  "license": "CC BY-SA 4.0",
+  "author": "Kenneth C. Zirkel",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Welcome_to_Winooski,_Vermont.jpg"
+ },
+ {
+  "file": "photos/porter-screen.jpg",
+  "lat": 44.4925,
+  "lng": -73.1806,
+  "name": "Porter Screen Mill",
+  "hint": "Old Winooski mill building seen from the tracks.",
+  "license": "CC BY-SA 4.0",
+  "author": "Dylanvt",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Porter_Screen_Company_from_tracks_2020.png"
+ },
+ {
+  "file": "photos/winooski-falls.jpg",
+  "lat": 44.4903,
+  "lng": -73.1849,
+  "name": "Winooski Falls Way",
+  "hint": "By the falls at the bottom of the mill district.",
+  "license": "CC BY-SA 4.0",
+  "author": "LudditeOne",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Winooski_Falls_bus_stop_on.a_clear_winter_day.jpg"
+ },
+ {
+  "file": "photos/libbys.jpg",
+  "lat": 44.5036,
+  "lng": -73.1826,
+  "name": "Libby’s Blue Line Diner",
+  "hint": "The classic railcar diner just over the Winooski line.",
+  "license": "CC BY 2.0",
+  "author": "NNECAPA Photo Library",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Libby%27s_Blue_Line_Diner,_Colchester_VT_(2873617940).jpg"
+ }
+]

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d3b2a" />
+  <title>Where in Burlington?</title>
+  <meta name="description" content="A daily Burlington, VT photo geography game — see a zoomed-in local photo, drop a pin on the map. By Btown Brief." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Where in Burlington?" />
+  <meta property="og:description" content="Five zoomed-in Burlington photos a day. Drop your pin. Prove you're a local." />
+  <meta property="og:url" content="https://btownbrief.github.io/where-in-btown/" />
+  <meta property="og:image" content="https://btownbrief.github.io/where-in-btown/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Where in Burlington?" />
+  <meta name="twitter:description" content="Five zoomed-in Burlington photos a day. Drop your pin. Prove you're a local." />
+  <meta name="twitter:image" content="https://btownbrief.github.io/where-in-btown/og-image.png" />
+
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icon-180.png" />
+
+  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <!-- intro -->
+  <div id="intro" class="panel">
+    <div class="panel-inner">
+      <div class="kicker">Btown Games · Daily</div>
+      <h1>WHERE IN<br /><span>BURLINGTON?</span></h1>
+      <p class="sub" id="introSub">Five local photos, zoomed in way too close. Drop your pin on the map. Wrong guesses zoom the photo out — and cost you points.</p>
+      <div class="rules">
+        <div>📷 <b>3 guesses</b> per photo — each miss zooms out</div>
+        <div>📍 Within <b>150&nbsp;m</b> counts as found</div>
+        <div>⭐ Nail it fully zoomed-in for a <b>1.5×</b> bonus</div>
+      </div>
+      <button class="cta" id="startBtn">PLAY TODAY'S ROUND</button>
+      <div class="streak-line" id="introStreak"></div>
+      <a class="tiny-link" href="./credits.html">Photo credits</a>
+    </div>
+  </div>
+
+  <!-- game -->
+  <div id="game" class="hidden">
+    <header id="topbar">
+      <div class="tb-title">WHERE IN <span>BTV</span></div>
+      <div class="tb-round" id="roundLabel">1 / 5</div>
+      <div class="tb-score" id="scoreLabel">0 pts</div>
+    </header>
+
+    <div id="stage">
+      <div id="photoPane">
+        <div id="photoFrame"><img id="photo" alt="Mystery Burlington location" draggable="false" /></div>
+        <div id="zoomPips" aria-label="zoom stage"><span></span><span></span><span></span></div>
+        <div id="photoMsg" class="hidden"></div>
+      </div>
+      <div id="mapPane"><div id="map"></div></div>
+    </div>
+
+    <div id="controls">
+      <button id="flipBtn" class="flip">🗺️ MAP</button>
+      <button id="confirmBtn" class="confirm" disabled>DROP A PIN ON THE MAP</button>
+    </div>
+
+    <!-- per-round reveal -->
+    <div id="reveal" class="sheet hidden">
+      <div class="sheet-grab"></div>
+      <div class="reveal-dist" id="revealDist"></div>
+      <div class="reveal-pts" id="revealPts"></div>
+      <h2 id="revealName"></h2>
+      <p id="revealHint"></p>
+      <p class="attr" id="revealAttr"></p>
+      <button class="cta" id="nextBtn">NEXT PHOTO</button>
+    </div>
+  </div>
+
+  <!-- results -->
+  <div id="results" class="panel hidden">
+    <div class="panel-inner">
+      <div class="kicker" id="resultsDate"></div>
+      <h1 class="smaller">TODAY'S<br /><span>VERDICT</span></h1>
+      <div class="total" id="totalScore">0</div>
+      <div class="total-sub">points · <span id="resultsRank"></span></div>
+      <div class="emoji-summary" id="emojiSummary"></div>
+      <div class="streak-line" id="resultsStreak"></div>
+      <button class="cta" id="shareBtn">SHARE RESULT</button>
+
+      <div class="lb hidden" id="lb">
+        <div class="lb-tabs">
+          <button class="chip sel" id="lbThisBtn">🏆 This Month</button>
+          <button class="chip" id="lbLastBtn">Last Month</button>
+        </div>
+        <div class="lb-status" id="lbStatus"></div>
+        <ol id="lbList"></ol>
+        <div class="lb-form hidden" id="lbForm">
+          <input id="lbNameInput" maxlength="20" placeholder="Your name" autocomplete="off" />
+          <button class="chip" id="lbSaveBtn">Save</button>
+        </div>
+        <button class="chip lb-rename hidden" id="lbRenameBtn">✏️ Change name</button>
+      </div>
+
+      <div class="countdown">Next round in <b id="countdown">–</b></div>
+      <a class="cta ghost" href="https://www.btownbrief.com/" target="_blank" rel="noopener">📰 Read the Btown Brief →</a>
+      <a class="tiny-link" href="./credits.html">Photo credits</a>
+    </div>
+  </div>
+
+  <footer id="footer">
+    A Btown Games production · <a href="https://www.btownbrief.com/" target="_blank" rel="noopener">Read the Btown Brief →</a>
+  </footer>
+
+  <script src="./vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

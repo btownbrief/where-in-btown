@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo credits · Where in Burlington?</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1d3b2a; color: #f6f1e3;
+      font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+      padding: 32px 20px 60px; max-width: 720px; margin: 0 auto;
+    }
+    h1 { font-size: 28px; font-weight: 900; }
+    p.lead { margin: 10px 0 24px; font-size: 14px; color: #d8cfb8; line-height: 1.5; }
+    a { color: #e8b23a; }
+    ul { list-style: none; }
+    li { padding: 10px 0; border-bottom: 1px solid rgba(246,241,227,0.15); font-size: 14px; line-height: 1.5; }
+    li b { display: block; }
+    li span { color: #d8cfb8; font-size: 12px; }
+    .back { display: inline-block; margin-bottom: 20px; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <a class="back" href="./">← Back to the game</a>
+  <h1>Photo credits</h1>
+  <p class="lead">Every photo in Where in Burlington? comes from
+    <a href="https://commons.wikimedia.org/" rel="noopener">Wikimedia Commons</a> under a free license
+    (CC BY, CC BY-SA, CC0, or public domain). Thank you to the photographers who documented our city.
+    Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.</p>
+  <ul id="list"></ul>
+  <script type="module">
+    const spots = await (await fetch('./data/spots.json')).json();
+    const list = document.getElementById('list');
+    for (const s of spots.slice().sort((a, b) => a.name.localeCompare(b.name))) {
+      const li = document.createElement('li');
+      const b = document.createElement('b');
+      b.textContent = s.name;
+      const span = document.createElement('span');
+      const a = document.createElement('a');
+      a.href = s.sourceUrl; a.rel = 'noopener'; a.textContent = 'source';
+      span.append(`Photo by ${s.author || 'Unknown'} · ${s.license} · `);
+      span.append(a);
+      li.append(b, span);
+      list.append(li);
+    }
+  </script>
+  <p class="lead" style="margin-top:28px">A Btown Games production ·
+    <a href="https://www.btownbrief.com/" rel="noopener">Read the Btown Brief →</a></p>
+</body>
+</html>
