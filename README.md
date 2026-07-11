@@ -12,4 +12,4 @@ Dev: `python3 -m http.server` in the repo root. `?testdate=YYYY-MM-DD` plays a s
 
 `scripts/harvest.mjs` + `scripts/picks.mjs` were the one-time photo-database build tools.
 
-A Btown Games production · [Read the Btown Brief →](https://www.btownbrief.com)
+A Btown Games production · [Read the BTown Brief →](https://www.btownbrief.com)
