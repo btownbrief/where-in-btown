@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+  <button class="sound-toggle" id="soundBtn" type="button" aria-pressed="false" aria-label="Turn sound on">🔇</button>
   <button class="duel-icon" id="duelBtn" aria-label="Challenge a friend">⚔️</button>
 
   <!-- intro -->
@@ -52,12 +53,16 @@
       <div class="tb-round" id="roundLabel">1 / 5</div>
       <div class="tb-score" id="scoreLabel">0 pts</div>
     </header>
+    <div class="run-strip" id="runStrip" role="progressbar" aria-label="Rounds finished" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
     <div class="duelbar hidden" id="duelBar"></div>
 
     <div id="stage">
       <div id="photoPane">
         <div id="photoFrame"><img id="photo" alt="Mystery Burlington location" draggable="false" /></div>
         <div id="zoomPips" aria-label="zoom stage"><span></span><span></span><span></span></div>
+        <div id="maxPoints">UP TO 1,500 PTS</div>
         <div id="photoMsg" class="hidden"></div>
       </div>
       <div id="mapPane"><div id="map"></div></div>
@@ -78,6 +83,15 @@
       <p class="attr" id="revealAttr"></p>
       <button class="cta" id="nextBtn">NEXT PHOTO</button>
     </div>
+
+    <div id="feelLayer" aria-hidden="true">
+      <div id="milestoneBanner">
+        <strong>DEAD-ON AT FULL ZOOM</strong>
+        <span>1.5× LOCAL LEGEND BONUS</span>
+      </div>
+      <div id="burstLayer"></div>
+    </div>
+    <div class="sr-only" id="announcer" aria-live="polite" aria-atomic="true"></div>
   </div>
 
   <!-- results -->

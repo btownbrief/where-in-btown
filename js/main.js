@@ -17,6 +17,7 @@ import {
   makeDuelPayload, spotsForDuel, duelPayloadToken, payloadFromDuelToken,
   sameDuelPayload, compareDuelResults,
 } from './duel-game.js';
+import { sound } from './audio.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -26,6 +27,8 @@ const IS_DUEL_REQUEST = params.get('duel') === '1';
 const LIVE_DATE = liveTodayKey();
 const DATE = todayKey();
 const ZOOM_SCALES = [3.4, 1.9, 1.0];
+const MAX_POINTS = ZOOM_SCALES.map((_, stage) => roundScore(0, stage, true));
+const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)');
 
 let spots = [];        // full database
 let daily = [];        // today's five
@@ -38,6 +41,12 @@ let duel = null;
 let duelSubmitted = false;
 let duelStartedAt = 0;
 let duelRunMs = 0;
+let revealCountFrame = 0;
+let maxPointsFrame = 0;
+let routeFrame = 0;
+let routeAnimation = null;
+let feelTimer = 0;
+let photoMsgTimer = 0;
 
 // ------------------------------------------------------------ boot
 
@@ -54,6 +63,8 @@ if (IS_DUEL_REQUEST) {
   daily = dailySpots(spots, DATE);
 }
 initMap();
+renderSoundButton();
+renderRoundStrip();
 
 const streak = getStreak();
 if (!IS_DUEL_REQUEST && streak.streak > 0) {
@@ -97,7 +108,97 @@ function applyZoom(stageIdx, animate = true) {
   }
 }
 
+function scoreBand(score) {
+  if (score >= 900) return 'good';
+  if (score >= 450) return 'okay';
+  return 'low';
+}
+
+function renderRoundStrip(animateIndex = -1) {
+  const strip = $('runStrip');
+  [...strip.children].forEach((segment, index) => {
+    const round = state.rounds[index];
+    segment.className = round ? `filled band-${scoreBand(round.score)}` : '';
+    if (index === animateIndex && !REDUCED_MOTION.matches) {
+      segment.classList.add('just-filled');
+    }
+  });
+  strip.setAttribute('aria-valuenow', String(state.rounds.length));
+  strip.setAttribute('aria-valuetext', `${state.rounds.length} of ${ROUNDS} rounds finished`);
+}
+
+function countText(element, from, to, duration, format, frameKey) {
+  if (frameKey === 'reveal') cancelAnimationFrame(revealCountFrame);
+  else cancelAnimationFrame(maxPointsFrame);
+  if (REDUCED_MOTION.matches || duration <= 0) {
+    element.textContent = format(to);
+    return;
+  }
+  const started = performance.now();
+  const step = (now) => {
+    const progress = Math.min(1, (now - started) / duration);
+    const eased = 1 - ((1 - progress) ** 3);
+    element.textContent = format(Math.round(from + (to - from) * eased));
+    if (progress < 1) {
+      const frame = requestAnimationFrame(step);
+      if (frameKey === 'reveal') revealCountFrame = frame;
+      else maxPointsFrame = frame;
+    }
+  };
+  const frame = requestAnimationFrame(step);
+  if (frameKey === 'reveal') revealCountFrame = frame;
+  else maxPointsFrame = frame;
+}
+
+function updateMaxPoints(stageIdx, animate = false) {
+  const element = $('maxPoints');
+  const current = MAX_POINTS[Math.max(0, stageIdx - 1)] || MAX_POINTS[0];
+  const next = MAX_POINTS[Math.min(stageIdx, MAX_POINTS.length - 1)];
+  element.classList.remove('cost-drop');
+  countText(
+    element,
+    animate ? current : next,
+    next,
+    animate ? 480 : 0,
+    (value) => `UP TO ${value.toLocaleString()} PTS`,
+    'max',
+  );
+  if (animate && !REDUCED_MOTION.matches) {
+    void element.offsetWidth;
+    element.classList.add('cost-drop');
+  }
+}
+
+function clearTransientEffects() {
+  cancelAnimationFrame(revealCountFrame);
+  cancelAnimationFrame(maxPointsFrame);
+  revealCountFrame = 0;
+  maxPointsFrame = 0;
+  clearTimeout(feelTimer);
+  clearTimeout(photoMsgTimer);
+  cancelAnimationFrame(routeFrame);
+  routeFrame = 0;
+  if (routeAnimation) routeAnimation.cancel();
+  routeAnimation = null;
+  sound.silence();
+  $('milestoneBanner').classList.remove('show');
+  $('burstLayer').replaceChildren();
+  $('photoMsg').classList.add('hidden');
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) return;
+  clearTransientEffects();
+  const latest = state.rounds[state.rounds.length - 1];
+  if (!$('reveal').classList.contains('hidden') && latest) {
+    $('revealPts').textContent = `+${latest.score} pts`;
+  } else if (!$('maxPoints').classList.contains('hidden')) {
+    updateMaxPoints(state.stage);
+  }
+});
+
 function startRound() {
+  clearTransientEffects();
   const spot = spotFor(state.round);
   pending = null;
   resetRound();
@@ -105,7 +206,10 @@ function startRound() {
   $('reveal').classList.add('hidden');
   $('roundLabel').textContent = `${state.round + 1} / ${ROUNDS}`;
   $('scoreLabel').textContent = `${totalScore()} pts`;
+  renderRoundStrip();
   $('photoMsg').classList.add('hidden');
+  $('maxPoints').classList.remove('hidden');
+  updateMaxPoints(state.stage);
   const photo = $('photo');
   photo.src = `./${spot.file}`;
   applyZoom(state.stage, false);
@@ -119,6 +223,7 @@ function totalScore() {
 
 function onPin(latlng) {
   pending = latlng;
+  sound.pin();
   updateConfirm();
 }
 
@@ -168,18 +273,69 @@ $('confirmBtn').addEventListener('click', () => {
     if (!IS_DUEL_REQUEST) saveState(state);
     pending = null;
     const msg = $('photoMsg');
-    msg.textContent = `${fmtDist(d)} away — zooming out…`;
+    msg.textContent = `${fmtDist(d)} away — zooming out. Up to ${MAX_POINTS[state.stage].toLocaleString()} pts now.`;
     msg.classList.remove('hidden');
-    setTimeout(() => msg.classList.add('hidden'), 2600);
+    clearTimeout(photoMsgTimer);
+    photoMsgTimer = setTimeout(() => msg.classList.add('hidden'), 2600);
     showPhoto();
     applyZoom(state.stage);
+    updateMaxPoints(state.stage, true);
+    $('announcer').textContent = `Not quite. Maximum available drops to ${MAX_POINTS[state.stage].toLocaleString()} points.`;
     updateConfirm();
   }
 });
 
+function animateTruthLine() {
+  if (REDUCED_MOTION.matches) return;
+  routeFrame = requestAnimationFrame(() => {
+    routeFrame = 0;
+    const paths = [...document.querySelectorAll('#map path[stroke-dasharray]')];
+    const path = paths[paths.length - 1];
+    if (!path || typeof path.getTotalLength !== 'function' || typeof path.animate !== 'function') return;
+    const length = path.getTotalLength();
+    routeAnimation = path.animate([
+      { strokeDasharray: `${length} ${length}`, strokeDashoffset: length },
+      { strokeDasharray: `${length} ${length}`, strokeDashoffset: 0 },
+    ], {
+      duration: 650,
+      easing: 'cubic-bezier(.22,1,.36,1)',
+    });
+    routeAnimation.addEventListener('finish', () => { routeAnimation = null; }, { once: true });
+  });
+}
+
+function celebrateHardSolve() {
+  const banner = $('milestoneBanner');
+  const burst = $('burstLayer');
+  clearTimeout(feelTimer);
+  burst.replaceChildren();
+  banner.classList.remove('show');
+  void banner.offsetWidth;
+  banner.classList.add('show');
+  if (!REDUCED_MOTION.matches) {
+    for (let index = 0; index < 18; index += 1) {
+      const fleck = document.createElement('i');
+      const angle = (Math.PI * 2 * index) / 18;
+      const distance = 70 + (index % 3) * 22;
+      fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+      fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+      fleck.style.setProperty('--delay', `${(index % 4) * 25}ms`);
+      burst.appendChild(fleck);
+    }
+  }
+  feelTimer = setTimeout(() => {
+    banner.classList.remove('show');
+    burst.replaceChildren();
+  }, 1700);
+}
+
 function finishRound(guess, d, solved) {
+  clearTimeout(photoMsgTimer);
+  $('photoMsg').classList.add('hidden');
   const spot = spotFor(state.round);
   const score = roundScore(d, state.stage, solved);
+  const hardSolve = solved && state.stage === 0;
+  const resolvedRound = state.round;
   state.rounds.push({ d: Math.round(d), stage: state.stage, solved, score, guess });
   disablePin();
   pending = null;
@@ -187,12 +343,16 @@ function finishRound(guess, d, solved) {
   // reveal on the map: pin vs truth
   showMap();
   showTruth(guess, spot);
+  animateTruthLine();
   applyZoom(2, true); // fully zoom out the photo for the curious
+  $('maxPoints').classList.add('hidden');
 
   $('revealDist').textContent = solved
     ? `📍 Found it — ${fmtDist(d)} off${state.stage === 0 ? ' at full zoom-in! (×1.5)' : state.stage === 1 ? ' (×1.2)' : ''}`
     : `😬 ${fmtDist(d)} away`;
-  $('revealPts').textContent = `+${score} pts`;
+  const points = $('revealPts');
+  points.className = `reveal-pts band-${scoreBand(score)}`;
+  countText(points, 0, score, 650, (value) => `+${value} pts`, 'reveal');
   $('revealName').textContent = spot.name;
   $('revealHint').textContent = spot.hint;
   const attr = $('revealAttr');
@@ -205,6 +365,10 @@ function finishRound(guess, d, solved) {
   $('nextBtn').textContent = state.round === ROUNDS - 1 ? 'SEE RESULTS' : 'NEXT PHOTO';
   $('reveal').classList.remove('hidden');
   $('scoreLabel').textContent = `${totalScore()} pts`;
+  renderRoundStrip(resolvedRound);
+  $('announcer').textContent = `${solved ? 'Found it' : 'Round over'}, ${fmtDist(d)} away. ${score} points.`;
+  sound.reveal(solved, hardSolve);
+  if (hardSolve) celebrateHardSolve();
 
   state.stage = 0;
   state.round += 1;
@@ -218,6 +382,7 @@ function finishRound(guess, d, solved) {
 }
 
 $('nextBtn').addEventListener('click', () => {
+  clearTransientEffects();
   $('reveal').classList.add('hidden');
   if (state.done && IS_DUEL_REQUEST) finishDuelRun();
   else if (state.done) showResults(true);
@@ -226,7 +391,7 @@ $('nextBtn').addEventListener('click', () => {
 
 // ------------------------------------------------------------ results
 
-function showResults() {
+function showResults(celebrate = false) {
   if (IS_DUEL_REQUEST) return;
   document.body.classList.remove('playing');
   $('game').classList.add('hidden');
@@ -234,9 +399,10 @@ function showResults() {
   $('results').classList.remove('hidden');
 
   const total = totalScore();
+  const rank = rankLine(total);
   $('resultsDate').textContent = `Where in Burlington · ${DATE}`;
   $('totalScore').textContent = total.toLocaleString();
-  $('resultsRank').textContent = rankLine(total);
+  $('resultsRank').textContent = rank;
   $('emojiSummary').textContent = state.rounds.map((r) => emojiFor(r.d, r.solved ? r.stage : -1)).join(' ');
 
   const st = bumpStreak(DATE); // idempotent per day
@@ -246,6 +412,7 @@ function showResults() {
   tickCountdown();
   setInterval(tickCountdown, 1000);
   updateLeaderboard(total); // guarded by state.submitted — sends exactly once
+  if (celebrate) sound.runEnd(rank);
 }
 
 function rankLine(total) {
@@ -278,6 +445,22 @@ $('shareBtn').addEventListener('click', async () => {
       setTimeout(() => { $('shareBtn').textContent = 'SHARE RESULT'; }, 1600);
     }
   } catch { /* user cancelled */ }
+});
+
+// ------------------------------------------------------------ sound
+
+function renderSoundButton() {
+  const enabled = sound.enabled;
+  const button = $('soundBtn');
+  button.textContent = enabled ? '🔊' : '🔇';
+  button.setAttribute('aria-pressed', String(enabled));
+  button.setAttribute('aria-label', enabled ? 'Turn sound off' : 'Turn sound on');
+  button.title = enabled ? 'Sound on' : 'Sound off';
+}
+
+$('soundBtn').addEventListener('click', () => {
+  sound.setEnabled(!sound.enabled);
+  renderSoundButton();
 });
 
 // ------------------------------------------------------------ leaderboard
