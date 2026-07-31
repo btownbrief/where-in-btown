@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+  <button class="duel-icon" id="duelBtn" aria-label="Challenge a friend">⚔️</button>
 
   <!-- intro -->
   <div id="intro" class="panel">
@@ -51,6 +52,7 @@
       <div class="tb-round" id="roundLabel">1 / 5</div>
       <div class="tb-score" id="scoreLabel">0 pts</div>
     </header>
+    <div class="duelbar hidden" id="duelBar"></div>
 
     <div id="stage">
       <div id="photoPane">
@@ -112,6 +114,52 @@
   <footer id="footer">
     A Btown Games production · <a href="https://www.btownbrief.com/" target="_blank" rel="noopener">Read the BTown Brief →</a>
   </footer>
+
+  <!-- Duel: challenge a friend on the same five seeded photos -->
+  <div class="duel-overlay hidden" id="duelOverlay">
+    <div class="duel-modal">
+      <button class="duel-close" id="duelOverlayClose" aria-label="Close">&times;</button>
+      <div class="kicker">Burlington showdown</div>
+      <h2>⚔️ CHALLENGE A FRIEND</h2>
+      <p>Same five mystery photos, two phones. Most points wins; ties go to the faster local. Today’s live round stays out of it.</p>
+      <button class="cta duel-action" id="hostBtn">START A DUEL — GET A CODE</button>
+      <button class="chip duel-action" id="joinBtn">JOIN WITH THEIR CODE</button>
+      <button class="chip duel-action hidden" id="rejoinBtn"></button>
+    </div>
+  </div>
+
+  <div class="duel-overlay hidden" id="onlinePanel" data-static>
+    <div class="duel-modal">
+      <h2 id="opTitle">START A DUEL</h2>
+      <label class="duel-label" for="opName">Your name</label>
+      <input class="duel-input" id="opName" maxlength="24" autocomplete="nickname" placeholder="Map maven" />
+      <div id="opCodeWrap" class="hidden">
+        <label class="duel-label" for="opCode">Duel code</label>
+        <input class="duel-input duel-code" id="opCode" maxlength="4" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABCD" />
+      </div>
+      <p id="opError" class="duel-error hidden"></p>
+      <button class="cta duel-action" id="opGo">GO</button>
+      <button class="chip duel-action" id="opCancel">BACK</button>
+    </div>
+  </div>
+
+  <div class="duel-overlay hidden" id="lobby" data-static>
+    <div class="duel-modal">
+      <h2>READ THIS CODE TO YOUR RIVAL</h2>
+      <div id="lobbyCode"></div>
+      <p>They tap ⚔️, choose <b>join</b>, and type it in. Then both sets of mystery photos open.</p>
+      <button class="chip duel-action" id="lobbyCancel">CALL IT OFF</button>
+    </div>
+  </div>
+
+  <div class="duel-overlay hidden" id="duelDone" data-static>
+    <div class="duel-modal">
+      <h2 id="duelDoneHead"></h2>
+      <div id="duelDoneRows"></div>
+      <button class="cta duel-action" id="duelRematchBtn">↻ FIVE NEW PHOTOS</button>
+      <button class="chip duel-action" id="duelExitBtn">BACK TO TODAY’S ROUND</button>
+    </div>
+  </div>
 
   <script src="./vendor/leaflet/leaflet.js"></script>
   <script type="module" src="./js/main.js"></script>
