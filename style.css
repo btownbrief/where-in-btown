@@ -21,6 +21,21 @@ html, body {
 body { overflow: hidden; position: fixed; inset: 0; }
 
 .hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+.sound-toggle {
+  position: fixed; top: calc(12px + env(safe-area-inset-top, 0)); left: 14px; z-index: 36;
+  width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  border: 1px solid rgba(246,241,227,0.3); background: rgba(13,26,17,0.82);
+  color: var(--cream); font-size: 17px; box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+}
+body.playing .sound-toggle {
+  top: calc(72px + env(safe-area-inset-top, 0));
+  left: auto; right: 12px; bottom: auto;
+}
 
 /* ---------- full-screen panels (intro / results) ---------- */
 .panel {
@@ -104,6 +119,24 @@ a.cta.ghost {
 .tb-title span { color: var(--gold); }
 .tb-round { font-size: 13px; font-weight: 700; color: var(--cream-dim); }
 .tb-score { font-size: 15px; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+.run-strip {
+  flex: none; z-index: 20; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;
+  padding: 5px 12px 7px; background: #14281b;
+}
+.run-strip span {
+  height: 6px; overflow: hidden; border-radius: 999px;
+  background: rgba(246,241,227,0.18);
+  box-shadow: inset 0 0 0 1px rgba(246,241,227,0.08);
+  transform-origin: left;
+}
+.run-strip span.filled.band-good { background: #6fc585; }
+.run-strip span.filled.band-okay { background: var(--gold); }
+.run-strip span.filled.band-low { background: var(--red); }
+.run-strip span.just-filled { animation: segment-fill 0.42s cubic-bezier(.22,1,.36,1); }
+@keyframes segment-fill {
+  from { transform: scaleX(0); filter: brightness(1.8); }
+  to { transform: scaleX(1); filter: brightness(1); }
+}
 
 #stage { flex: 1; position: relative; overflow: hidden; }
 
@@ -129,6 +162,19 @@ a.cta.ghost {
 }
 #zoomPips span.used { background: var(--red); }
 #zoomPips span.cur { background: var(--gold); }
+#maxPoints {
+  position: absolute; top: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 3; white-space: nowrap;
+  border: 1px solid rgba(246,241,227,0.28); border-radius: 999px;
+  background: rgba(13,26,17,0.78); color: var(--cream);
+  padding: 4px 10px; font-size: 11px; font-weight: 900; letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+#maxPoints.cost-drop { animation: cost-drop 0.48s ease; }
+@keyframes cost-drop {
+  0%, 100% { color: var(--cream); transform: translateX(-50%) scale(1); }
+  45% { color: #ff9b7c; transform: translateX(-50%) scale(1.08); }
+}
 #photoMsg {
   position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
   z-index: 3; max-width: 88%;
@@ -180,12 +226,60 @@ button.confirm:not(:disabled):active { transform: translateY(2px); box-shadow: 0
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .sheet-grab { width: 44px; height: 4px; border-radius: 2px; background: rgba(246,241,227,0.3); margin: 2px auto 10px; }
 .reveal-dist { font-size: 15px; font-weight: 700; color: var(--cream-dim); }
-.reveal-pts { font-size: 34px; font-weight: 900; color: var(--gold); font-variant-numeric: tabular-nums; }
+.reveal-pts {
+  display: inline-block; margin-top: 5px; min-width: 132px;
+  border-radius: 999px; padding: 3px 14px;
+  font-size: 32px; font-weight: 900; color: #13281b;
+  font-variant-numeric: tabular-nums;
+}
+.reveal-pts.band-good { background: #6fc585; }
+.reveal-pts.band-okay { background: var(--gold); }
+.reveal-pts.band-low { background: var(--red); color: #fff7ec; }
 .sheet h2 { margin-top: 4px; font-size: 22px; font-weight: 900; }
 .sheet p { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--cream-dim); }
 .sheet .attr { font-size: 11px; opacity: 0.8; margin-top: 10px; }
 .sheet .attr a { color: var(--gold); }
 .sheet .cta { margin-top: 16px; font-size: 16px; padding: 13px 34px; }
+
+/* ---------- milestone effects ---------- */
+#feelLayer {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  display: grid; place-items: center; overflow: hidden;
+}
+#milestoneBanner {
+  opacity: 0; transform: translateY(8px) scale(0.92);
+  width: min(330px, 82vw); padding: 14px 18px;
+  border: 2px solid var(--gold); border-radius: 16px;
+  background: rgba(20,40,27,0.96); color: var(--cream); text-align: center;
+  box-shadow: 0 14px 50px rgba(0,0,0,0.55), 0 0 0 5px rgba(232,178,58,0.15);
+}
+#milestoneBanner strong {
+  display: block; color: var(--gold); font-size: 20px; font-weight: 900;
+  letter-spacing: 0.04em;
+}
+#milestoneBanner span {
+  display: block; margin-top: 3px; color: var(--cream);
+  font-size: 12px; font-weight: 800; letter-spacing: 0.08em;
+}
+#milestoneBanner.show { animation: milestone-banner 1.7s cubic-bezier(.22,1,.36,1); }
+@keyframes milestone-banner {
+  0% { opacity: 0; transform: translateY(14px) scale(0.88); }
+  12%, 72% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+#burstLayer { position: absolute; left: 50%; top: 50%; }
+#burstLayer i {
+  position: absolute; width: 8px; height: 14px; border-radius: 70% 20% 70% 20%;
+  background: var(--gold); opacity: 0;
+  animation: local-burst 0.95s var(--delay) cubic-bezier(.15,.75,.25,1) forwards;
+}
+#burstLayer i:nth-child(3n) { background: #6fc585; }
+#burstLayer i:nth-child(3n + 1) { background: var(--cream); }
+@keyframes local-burst {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1) rotate(200deg); }
+}
 
 /* ---------- leaderboard ---------- */
 .lb {
@@ -322,4 +416,13 @@ button.duel-action:disabled { opacity: 0.55; cursor: default; }
   #stage.show-map #photoPane { opacity: 1; pointer-events: auto; }
   button.flip { display: none; }
   .sheet { max-width: 560px; left: 50%; transform: translateX(-50%); border-radius: 22px 22px 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #photo, #photoPane, button.cta, a.cta { transition: none; }
+  .sheet, .run-strip span.just-filled, #maxPoints.cost-drop { animation: none; }
+  #milestoneBanner.show {
+    animation: none; opacity: 1; transform: none;
+  }
+  #burstLayer { display: none; }
 }
