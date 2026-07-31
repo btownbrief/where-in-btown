@@ -6,11 +6,16 @@ export const ROUNDS = 5;
 export const SOLVE_RADIUS_M = 150;
 const STAGE_BONUS = [1.5, 1.2, 1.0];
 
+// Real live key, ignoring test/duel query parameters.
+export function liveTodayKey() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date());
+}
+
 // today's key, e.g. "2026-07-07" (NY time); ?testdate=YYYY-MM-DD overrides
 export function todayKey() {
   const t = new URLSearchParams(location.search).get('testdate');
   if (t && /^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
-  return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date());
+  return liveTodayKey();
 }
 
 // ms until the next NY midnight
