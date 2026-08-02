@@ -135,7 +135,7 @@
       <button class="duel-close" id="duelOverlayClose" aria-label="Close">&times;</button>
       <div class="kicker">Burlington showdown</div>
       <h2>⚔️ CHALLENGE A FRIEND</h2>
-      <p>Same five mystery photos, two phones. Most points wins; ties go to the faster local. Today’s live round stays out of it.</p>
+      <p>Same five mystery photos, 2–4 phones. Most points wins; ties go to the faster local. Today’s live round stays out of it.</p>
       <button class="cta duel-action" id="hostBtn">START A DUEL — GET A CODE</button>
       <button class="chip duel-action" id="joinBtn">JOIN WITH THEIR CODE</button>
       <button class="chip duel-action hidden" id="rejoinBtn"></button>
@@ -147,6 +147,14 @@
       <h2 id="opTitle">START A DUEL</h2>
       <label class="duel-label" for="opName">Your name</label>
       <input class="duel-input" id="opName" maxlength="24" autocomplete="nickname" placeholder="Map maven" />
+      <div id="opSeatsWrap">
+        <label class="duel-label">Racers in this duel</label>
+        <div id="opSeats" class="seat-btns" role="group" aria-label="Racers in this duel">
+          <button class="seat-btn selected" data-seats="2" aria-pressed="true">2</button>
+          <button class="seat-btn" data-seats="3" aria-pressed="false">3</button>
+          <button class="seat-btn" data-seats="4" aria-pressed="false">4</button>
+        </div>
+      </div>
       <div id="opCodeWrap" class="hidden">
         <label class="duel-label" for="opCode">Duel code</label>
         <input class="duel-input duel-code" id="opCode" maxlength="4" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABCD" />
@@ -159,9 +167,11 @@
 
   <div class="duel-overlay hidden" id="lobby" data-static>
     <div class="duel-modal">
-      <h2>READ THIS CODE TO YOUR RIVAL</h2>
+      <h2>SHARE THIS CODE WITH YOUR RIVALS</h2>
       <div id="lobbyCode"></div>
-      <p>They tap ⚔️, choose <b>join</b>, and type it in. Then both sets of mystery photos open.</p>
+      <div id="lobbyList"></div>
+      <button class="cta duel-action" id="inviteBtn">📲 SEND AN INVITE</button>
+      <p>They tap ⚔️, choose <b>join</b>, and type it in. When the last chair fills, every set of mystery photos opens.</p>
       <button class="chip duel-action" id="lobbyCancel">CALL IT OFF</button>
     </div>
   </div>

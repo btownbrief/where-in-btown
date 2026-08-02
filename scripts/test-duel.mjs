@@ -13,7 +13,7 @@ import {
 
 const GAME = 'where-in-btown';
 
-/* ------------------------------------------------- two-phone environment */
+/* ------------------------------------------------ simulated-phone environment */
 
 const stores = new Map();
 let current = 'A';
@@ -28,6 +28,7 @@ function device(id) {
 }
 device('A');
 device('B');
+device('C');
 
 let passed = 0;
 function t(condition, label) {
@@ -178,6 +179,57 @@ await guest.match._fetch();
 t(guest.others()[0].left === true, 'guest sees the host left');
 await expectCode(guest.submitResult({ points: 3000, ms: 70000 }), 'opponent_left',
   'submit into an abandoned duel says why');
+
+/* --------------------------------------------- 3-racer heat (group duel) */
+
+const groupPayload = makeDuelPayload(spots, live, () => 0.619);
+device('A');
+const h3 = await Duel.create({
+  game: GAME, name: 'Ada', payload: groupPayload, seats: 3,
+});
+t(h3.status === 'waiting' && h3.match.maxSeats === 3,
+  '3-seat duel opens with maxSeats tracked');
+
+device('B');
+const g3b = await Duel.join({ game: GAME, code: h3.code, name: 'Bea' });
+t(g3b.status === 'waiting', 'second racer is seated and the duel keeps waiting');
+
+device('C');
+const g3c = await Duel.join({ game: GAME, code: h3.code, name: 'Cal' });
+t(g3c.status === 'playing' && g3c.match.maxSeats === 3 &&
+  g3c.payload.seed === groupPayload.seed,
+'third racer fills the duel with the same photo seed');
+
+device('A');
+await h3.match._fetch();
+await h3.submitResult({ points: 4300, ms: 50000 });
+device('C');
+await g3c.match._fetch();
+t(!g3c.isComplete(), 'one of three in — duel stays open');
+
+device('B');
+await g3b.submitResult({ points: 4400, ms: 62000 });
+device('C');
+await g3c.match._fetch();
+t(!g3c.isComplete(), 'two of three in — duel still stays open');
+await g3c.submitResult({ points: 0, ms: 30000, gaveUp: true });
+
+device('A');
+await h3.match._fetch();
+device('B');
+await g3b.match._fetch();
+t(h3.isComplete() && g3b.isComplete() && h3.status === 'over',
+  'all three staggered results merge and end the duel');
+
+const standings = [
+  { name: 'Ada', result: h3.myResult() },
+  ...h3.others().map((racer) => ({ name: racer.name, result: racer.result })),
+].sort((a, b) => -compareDuelResults(a.result, b.result));
+t(JSON.stringify(standings.map((racer) => racer.name)) ===
+  JSON.stringify(['Bea', 'Ada', 'Cal']),
+'standings use higher score first and put the concession last');
+t(g3b.others().every((racer) => racer.result),
+  'the winning phone sees every rival result');
 
 console.log(`\nALL DUEL TESTS PASSED (${passed} checks)`);
 process.exit(0);

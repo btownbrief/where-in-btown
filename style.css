@@ -395,11 +395,24 @@ button.duel-action:disabled { opacity: 0.55; cursor: default; }
 }
 .duel-error { margin-top: 10px !important; color: #ff9b7c !important; font-weight: 700; }
 
+.seat-btns { display: flex; gap: 8px; justify-content: center; }
+.seat-btn {
+  flex: 1; max-width: 64px; padding: 10px 0;
+  border: 2px solid rgba(246,241,227,0.3); border-radius: 10px;
+  background: rgba(0,0,0,0.28); color: var(--cream);
+  font: inherit; font-size: 18px; font-weight: 800; cursor: pointer;
+}
+.seat-btn.selected {
+  border-color: var(--gold); background: rgba(232,178,58,0.18);
+}
+
 #lobbyCode {
   padding: 10px 0 2px; color: var(--gold);
   font-size: 42px; font-weight: 900;
   letter-spacing: 0.35em; text-indent: 0.35em;
 }
+#lobbyList { padding: 2px 0 4px; font-size: 14px; font-weight: 700; }
+#lobbyList .chair-empty { opacity: 0.45; }
 #duelDoneRows { margin: 14px 0 4px; }
 .duel-row {
   display: flex; justify-content: space-between; gap: 12px;

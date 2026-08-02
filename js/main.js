@@ -582,7 +582,7 @@ lbLastBtn.addEventListener('click', () => {
 
 const FRIENDLY_DUEL_ERRORS = {
   not_found: 'No duel with that code — double-check the letters.',
-  room_full: 'That duel already has two map mavens.',
+  room_full: 'That duel is already full.',
   room_started: 'That duel already started without you.',
   not_ready: 'Friend duels are not switched on yet — check back soon!',
   offline: 'Could not reach Burlington — are you online?',
@@ -610,7 +610,19 @@ function freshDuelPayload() {
 }
 
 let duelPanelIntent = 'host';
+let duelSeats = 2;
 let pendingDuelResult = null;
+
+document.querySelectorAll('#opSeats .seat-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    duelSeats = +btn.dataset.seats;
+    document.querySelectorAll('#opSeats .seat-btn').forEach((b) => {
+      const selected = b === btn;
+      b.classList.toggle('selected', selected);
+      b.setAttribute('aria-pressed', String(selected));
+    });
+  });
+});
 
 $('duelBtn').addEventListener('click', () => {
   refreshDuelRejoin();
@@ -638,6 +650,7 @@ function openDuelPanel(intent) {
   $('opTitle').textContent = intent === 'host' ? 'START A DUEL' : 'JOIN A DUEL';
   $('opGo').textContent = intent === 'host' ? 'GET A CODE' : 'FIND THE SPOTS';
   $('opCodeWrap').classList.toggle('hidden', intent === 'host');
+  $('opSeatsWrap').classList.toggle('hidden', intent !== 'host');
   $('opError').classList.add('hidden');
   $('opName').value = $('opName').value || duelGetName();
   $('onlinePanel').classList.remove('hidden');
@@ -658,7 +671,7 @@ async function duelGo() {
   try {
     if (duelPanelIntent === 'host') {
       const d = await Duel.create({
-        game: DUEL_GAME, name, payload: freshDuelPayload(),
+        game: DUEL_GAME, name, payload: freshDuelPayload(), seats: duelSeats,
       });
       $('onlinePanel').classList.add('hidden');
       openDuelLobby(d);
@@ -693,13 +706,29 @@ function openDuelLobby(d) {
   if ($('lobby')._duel && $('lobby')._duel !== d) $('lobby')._duel.stop();
   $('lobby')._duel = d;
   $('lobbyCode').textContent = d.code;
+  renderLobbyRoster(d);
   $('lobby').classList.remove('hidden');
   d.start({
     onChange: () => {
+      renderLobbyRoster(d);
       if (d.status !== 'waiting') location.href = duelUrl(d.payload);
     },
     onError: () => {}, // a lobby hiccup can recover on the next poll
   });
+}
+
+function renderLobbyRoster(d) {
+  const box = $('lobbyList');
+  box.replaceChildren();
+  const seated = d.match.seats || [];
+  const total = d.match.maxSeats || seated.length || 2;
+  for (let i = 0; i < total; i++) {
+    const span = document.createElement('span');
+    const who = seated[i];
+    span.textContent = (i ? ' · ' : '') + (who ? who.name : 'open chair');
+    if (!who) span.className = 'chair-empty';
+    box.appendChild(span);
+  }
 }
 
 function cancelDuelLobby() {
@@ -740,21 +769,24 @@ async function rejoinDuel() {
   }
 }
 
-function duelOpponent() {
-  return duel ? (duel.others()[0] || {}) : {};
-}
-
 function renderDuelBar() {
   if (!duel) return;
-  const opp = duelOpponent();
+  const rivals = duel.others();
   const bar = $('duelBar');
   bar.replaceChildren();
   bar.classList.remove('hidden');
   const status = document.createElement('span');
-  const who = opp.name ? `VS ${opp.name}` : 'WAITING FOR YOUR RIVAL';
-  const note = opp.left && !duel.isComplete()
-    ? ' — THEY LEFT'
-    : duelSubmitted && !duel.isComplete() ? ' — WAITING ON THEIR PIN' : '';
+  const who = rivals.length
+    ? `VS ${rivals.map((rival) => rival.name).join(' + ')}`
+    : 'WAITING FOR YOUR RIVALS';
+  let note = '';
+  if (rivals.length && rivals.every((rival) => rival.left) && !duel.isComplete()) {
+    note = ' — THEY ALL LEFT';
+  } else if (duelSubmitted && !duel.isComplete()) {
+    const out = rivals.filter((rival) => !rival.result && !rival.left)
+      .map((rival) => rival.name);
+    note = out.length ? ` — WAITING ON ${out.join(' + ')}` : '';
+  }
   status.textContent = `⚔️ DUEL ${duel.code} · ${who}${note}`;
   const exit = document.createElement('button');
   exit.type = 'button';
@@ -786,42 +818,54 @@ function setDuelDoneMode({ head, message = '', primary = 'hidden' }) {
 }
 
 function showDuelWaiting() {
+  const out = duel ? duel.others().filter((rival) => !rival.result && !rival.left)
+    .map((rival) => rival.name || 'a rival') : [];
+  const who = out.length ? out.join(' + ') : 'your rivals';
   setDuelDoneMode({
     head: 'PIN DROPPED 📍',
-    message: 'Your score is locked in. Waiting for your rival to finish the same five photos…',
+    message: `Your score is locked in. Waiting for ${who} to finish the same five photos…`,
   });
 }
 
-function showDuelDeadEnd(message = 'Your rival left before both scores landed.') {
+function showDuelDeadEnd(message = 'A rival left before every score landed.') {
   setDuelDoneMode({ head: 'RIVAL OFF THE MAP', message });
 }
 
 function showDuelDone() {
   duel.stop();
-  const mine = duel.myResult();
-  const opp = duelOpponent();
-  const theirs = opp.result;
-  const outcome = compareDuelResults(mine, theirs);
-  const tie = outcome === 0;
-  $('duelDoneHead').textContent = tie
-    ? 'BURLINGTON STANDOFF 🤝'
-    : outcome > 0 ? 'YOU FOUND THE WIN 🏆' : `${(opp.name || 'YOUR RIVAL').toUpperCase()} WINS`;
+  const field = [
+    { label: 'You', me: true, result: duel.myResult() },
+    ...duel.others().map((rival) => ({
+      label: rival.name || 'Rival', me: false, result: rival.result,
+    })),
+  ].sort((a, b) => {
+    const aDnf = !a.result || a.result.gaveUp;
+    const bDnf = !b.result || b.result.gaveUp;
+    if (aDnf !== bDnf) return aDnf - bDnf;
+    if (aDnf) return 0;
+    return -compareDuelResults(a.result, b.result);
+  });
+  const best = field[0];
+  const everyoneDnf = field.every((entry) => !entry.result || entry.result.gaveUp);
+  const winners = everyoneDnf ? [] : field.filter((entry) =>
+    entry.result && !entry.result.gaveUp && compareDuelResults(entry.result, best.result) === 0);
+  $('duelDoneHead').textContent = everyoneDnf
+    ? 'EVERYONE CONCEDED — DRAW 🤝'
+    : winners.length > 1 ? 'BURLINGTON STANDOFF 🤝'
+    : winners[0].me ? 'YOU FOUND THE WIN 🏆' : `${winners[0].label.toUpperCase()} WINS`;
 
   const rows = $('duelDoneRows');
   rows.replaceChildren();
-  for (const [label, result, winner] of [
-    ['You', mine, outcome >= 0],
-    [opp.name || 'Rival', theirs, outcome <= 0],
-  ]) {
+  for (const entry of field) {
     const row = document.createElement('div');
-    row.className = `duel-row${winner ? ' win' : ''}`;
+    row.className = `duel-row${winners.includes(entry) ? ' win' : ''}`;
     const name = document.createElement('span');
-    name.textContent = label;
+    name.textContent = entry.label;
     const score = document.createElement('span');
     score.className = 'duel-result';
-    score.textContent = result.gaveUp
+    score.textContent = !entry.result || entry.result.gaveUp
       ? 'conceded'
-      : `${Number(result.points).toLocaleString()} pts · ${formatDuelTime(result.ms)}`;
+      : `${Number(entry.result.points).toLocaleString()} pts · ${formatDuelTime(entry.result.ms)}`;
     row.append(name, score);
     rows.appendChild(row);
   }
@@ -911,7 +955,8 @@ async function bootDuel() {
       }
       renderDuelBar();
       if (duel.isComplete()) showDuelDone();
-      else if (duelOpponent().left) showDuelDeadEnd();
+      else if (duel.others().some((rival) => rival.left)) showDuelDeadEnd();
+      else if (duelSubmitted) showDuelWaiting();
     },
     onError: (err) => {
       if (err && ['not_found', 'not_seated', 'room_started'].includes(err.code)) {
@@ -924,7 +969,7 @@ async function bootDuel() {
   if (duel.isComplete()) {
     $('intro').classList.add('hidden');
     showDuelDone();
-  } else if (duelOpponent().left) {
+  } else if (duel.others().some((rival) => rival.left)) {
     $('intro').classList.add('hidden');
     showDuelDeadEnd();
   } else if (duelSubmitted) {
@@ -985,3 +1030,30 @@ async function exitDuel() {
 
 void bootDuel();
 refreshDuelRejoin();
+
+// Text a link instead of reading letters aloud: ?join=ABCD opens the join
+// panel with the code filled in, then scrubs the URL so refreshes do not
+// re-trigger it.
+$('inviteBtn').addEventListener('click', async () => {
+  const d = $('lobby')._duel;
+  if (!d) return;
+  const url = `${location.origin}${location.pathname}?join=${d.code}`;
+  const text = `Duel me on five Burlington mystery photos! ⚔️ Tap to join: ${url}`;
+  try {
+    if (navigator.share && /Mobi|Android|iPhone|iPad/.test(navigator.userAgent)) {
+      await navigator.share({ text });
+    } else {
+      await navigator.clipboard.writeText(url);
+      $('inviteBtn').textContent = '✓ LINK COPIED';
+      setTimeout(() => { $('inviteBtn').textContent = '📲 SEND AN INVITE'; }, 1800);
+    }
+  } catch { /* share sheet closed */ }
+});
+
+(() => {
+  const code = new URLSearchParams(location.search).get('join');
+  if (!code || !/^[A-Za-z0-9]{4}$/.test(code)) return;
+  history.replaceState(null, '', location.pathname);
+  openDuelPanel('join');
+  $('opCode').value = code.toUpperCase();
+})();
