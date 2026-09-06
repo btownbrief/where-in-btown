@@ -24,8 +24,16 @@ runs must never write daily progress, streaks, or leaderboard scores.
 vendored byte-for-byte from `four-in-a-rowboat`; change canonical copies there
 and re-vendor rather than editing them here.
 
+## Levels and the insert
+
+Levels (`js/levels.js`) are a frozen ladder: the first 74 photos shuffle once with a fixed seed,
+later photos append. Never reorder existing levels; `scripts/test-levels.mjs` guards it. Level runs,
+duels and `?p=` peeks are memory-only (`PERSIST` in `main.js`): they never write `wib-state`, streaks
+or the leaderboard. The insert (`scripts/edition-insert.mjs`, rules in `scripts/insert-lib.mjs`) must
+keep refusing CC BY-SA photos; the newsletter will not license its own feature share-alike.
+
 ## Before you finish
 
-For duel or multiplayer changes, run `node scripts/test-duel.mjs` and
+For duel or multiplayer changes, run `node scripts/test-duel.mjs`, `node scripts/test-levels.mjs` and
 `node --check` on every touched JavaScript file. If UI changed, also inspect the
 game at a phone-sized viewport and report what was verified.

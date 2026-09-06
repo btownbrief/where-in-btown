@@ -8,6 +8,15 @@ Plain static site, no build step: `index.html` + `style.css` + `js/` ES modules.
 
 Monthly leaderboard shared with the other Btown Games via Supabase (`js/leaderboard.js`).
 
+**Levels** (`?levels=1&level=N`, the 🪜 button): a ladder of 14 five-photo levels that unlock in
+order. Difficulty is the zoom start (level 1 opens at 1.9×, the last levels at 4.2×, tighter than the
+daily's 3.4×). Progress is local (`wib-levels`); scores are not sent to the monthly board. `js/levels.js`.
+
+**The Wednesday insert** (`scripts/edition-insert.mjs <id> | --today`): renders one puzzle's crop at
+600px with the game's own focal/zoom logic and writes a Beehiiv-ready block with a `?p=<id>&d=<date>`
+"tap to reveal" deep link. It refuses share-alike photos and says why; `PHOTOS-WANTED.md` is the shot
+list for licence-free replacements. `?p=<id>` opens the peek view (photo, tap to reveal, credit; nothing saved).
+
 Dev: `python3 -m http.server` in the repo root. `?testdate=YYYY-MM-DD` plays a specific day's set.
 
 `scripts/harvest.mjs` + `scripts/picks.mjs` were the one-time photo-database build tools.

@@ -18,23 +18,32 @@ import {
   sameDuelPayload, compareDuelResults,
 } from './duel-game.js';
 import { sound } from './audio.js';
+import {
+  levelSpots, levelScales, levelCount, loadLevels, recordLevel, isUnlocked, levelStars, starText, levelBadge, difficultyLabel,
+} from './levels.js';
 
 const $ = (id) => document.getElementById(id);
 
 const DUEL_GAME = 'where-in-btown';
 const params = new URLSearchParams(location.search);
 const IS_DUEL_REQUEST = params.get('duel') === '1';
+// Levels: ?levels=1&level=N. Peek (the newsletter insert's deep link): ?p=<photo id>.
+const IS_LEVELS_REQUEST = !IS_DUEL_REQUEST && params.get('levels') === '1';
+const LEVEL = Math.max(1, Number.parseInt(params.get('level') || '1', 10) || 1);
+const PEEK_ID = /^[a-z0-9-]{1,40}$/.test(params.get('p') || '') ? params.get('p') : null;
+// Daily state, streaks and the leaderboard are never touched by duels, levels or peeks.
+const PERSIST = !IS_DUEL_REQUEST && !IS_LEVELS_REQUEST && !PEEK_ID;
 const LIVE_DATE = liveTodayKey();
 const DATE = todayKey();
-const ZOOM_SCALES = [3.4, 1.9, 1.0];
+const ZOOM_SCALES = IS_LEVELS_REQUEST ? levelScales(LEVEL) : [3.4, 1.9, 1.0];
 const MAX_POINTS = ZOOM_SCALES.map((_, stage) => roundScore(0, stage, true));
 const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)');
 
 let spots = [];        // full database
 let daily = [];        // today's five
 let duelPayload = IS_DUEL_REQUEST ? payloadFromDuelToken(params.get('spots')) : null;
-let state = IS_DUEL_REQUEST
-  ? { date: 'duel', round: 0, stage: 0, rounds: [], done: false, submitted: false }
+let state = !PERSIST
+  ? { date: IS_DUEL_REQUEST ? 'duel' : IS_LEVELS_REQUEST ? `level:${LEVEL}` : 'peek', round: 0, stage: 0, rounds: [], done: false, submitted: false }
   : loadState(DATE);
 let pending = null;    // latlng of unconfirmed pin
 let duel = null;
@@ -59,6 +68,8 @@ if (IS_DUEL_REQUEST) {
   } catch {
     daily = [];
   }
+} else if (IS_LEVELS_REQUEST) {
+  try { daily = levelSpots(spots, LEVEL); } catch { daily = []; }
 } else {
   daily = dailySpots(spots, DATE);
 }
@@ -67,11 +78,15 @@ renderSoundButton();
 renderRoundStrip();
 
 const streak = getStreak();
-if (!IS_DUEL_REQUEST && streak.streak > 0) {
+if (PERSIST && streak.streak > 0) {
   $('introStreak').textContent = `🔥 ${streak.streak}-day streak · best ${streak.best}`;
 }
 
-if (state.done) {
+if (PEEK_ID) {
+  startPeek(PEEK_ID);
+} else if (IS_LEVELS_REQUEST) {
+  bootLevels();
+} else if (state.done) {
   showResults(false);
 } else {
   $('intro').classList.remove('hidden');
@@ -96,7 +111,7 @@ function spotFor(i) { return daily[i]; }
 
 function applyZoom(stageIdx, animate = true) {
   const photo = $('photo');
-  const challengeKey = IS_DUEL_REQUEST ? `duel:${duelPayloadToken(duelPayload)}` : DATE;
+  const challengeKey = IS_DUEL_REQUEST ? `duel:${duelPayloadToken(duelPayload)}` : IS_LEVELS_REQUEST ? `level:${LEVEL}` : DATE;
   const f = focalPoint(spotFor(state.round), challengeKey);
   photo.style.transition = animate ? '' : 'none';
   photo.style.transformOrigin = `${f.x}% ${f.y}%`;
@@ -270,7 +285,7 @@ $('confirmBtn').addEventListener('click', () => {
   } else {
     // wrong-ish: zoom the photo out a stage and try again
     state.stage += 1;
-    if (!IS_DUEL_REQUEST) saveState(state);
+    if (PERSIST) saveState(state);
     pending = null;
     const msg = $('photoMsg');
     msg.textContent = `${fmtDist(d)} away — zooming out. Up to ${MAX_POINTS[state.stage].toLocaleString()} pts now.`;
@@ -378,7 +393,7 @@ function finishRound(guess, d, solved) {
       duelRunMs = Math.max(1, Math.round(performance.now() - duelStartedAt));
     }
   }
-  if (!IS_DUEL_REQUEST) saveState(state);
+  if (PERSIST) saveState(state);
 }
 
 $('nextBtn').addEventListener('click', () => {
@@ -393,6 +408,7 @@ $('nextBtn').addEventListener('click', () => {
 
 function showResults(celebrate = false) {
   if (IS_DUEL_REQUEST) return;
+  if (IS_LEVELS_REQUEST) { showLevelResults(celebrate); return; }
   document.body.classList.remove('playing');
   $('game').classList.add('hidden');
   $('intro').classList.add('hidden');
@@ -431,6 +447,10 @@ function tickCountdown() {
 
 function shareText() {
   const lines = state.rounds.map((r, i) => `${emojiFor(r.d, r.solved ? r.stage : -1)} ${fmtDist(r.d)}`);
+  if (IS_LEVELS_REQUEST) {
+    // the level badge is the share: "Level 7 · ★★☆ · hard"
+    return `WHERE IN BURLINGTON? ${levelBadge(LEVEL, totalScore())}\n${lines.join('\n')}\n📊 ${totalScore().toLocaleString()} pts\nhttps://btownbrief.github.io/where-in-btown/?levels=1&level=${LEVEL}`;
+  }
   const st = getStreak();
   return `WHERE IN BURLINGTON? ${DATE}\n${lines.join('\n')}\n📊 ${totalScore().toLocaleString()} pts${st.streak > 1 ? ` · 🔥${st.streak}` : ''}\nhttps://btownbrief.github.io/where-in-btown/`;
 }
@@ -502,7 +522,7 @@ async function updateLeaderboard(scoreToSubmit) {
     try {
       await submitScore(scoreToSubmit);
       state.submitted = true;
-      if (!IS_DUEL_REQUEST) saveState(state);
+      if (PERSIST) saveState(state);
     } catch { /* offline — still show the board */ }
   }
   renderBoard();
@@ -547,7 +567,7 @@ $('lbSaveBtn').addEventListener('click', async (e) => {
     if (pendingScore > 0 && !state.submitted) {
       await submitScore(pendingScore);
       state.submitted = true;
-      if (!IS_DUEL_REQUEST) saveState(state);
+      if (PERSIST) saveState(state);
     }
   } catch { /* offline */ }
   renderBoard();
@@ -571,6 +591,120 @@ lbLastBtn.addEventListener('click', () => {
   lbThisBtn.classList.remove('sel');
   renderBoard();
 });
+
+// ------------------------------------------------------------ levels mode
+// A ladder of five-photo levels (js/levels.js). Memory-only round state like a
+// duel; the only thing written is progress under 'wib-levels'. Scores stay
+// local: the monthly leaderboard is the daily's and a level total would
+// pollute it. If levels ever get a board it needs its own p_game.
+
+function levelHref(level) { return `?levels=1&level=${level}`; }
+
+function bootLevels() {
+  const n = levelCount(spots);
+  const progress = loadLevels();
+  if (!daily.length || !isUnlocked(LEVEL, progress)) {
+    // locked or out of range: send them to the picker, not into a puzzle
+    $('intro').classList.remove('hidden');
+    openLevels();
+    return;
+  }
+  const tight = ZOOM_SCALES[0];
+  $('intro').querySelector('.kicker').textContent = `Btown Games · Level ${LEVEL} of ${n} · ${difficultyLabel(LEVEL)}`;
+  $('introSub').textContent = `Five photos, opening at ${tight}× zoom. Finish the level to unlock the next one. Three stars at 6,000 points.`;
+  $('startBtn').textContent = `PLAY LEVEL ${LEVEL}`;
+  const best = progress.best[String(LEVEL)];
+  $('introStreak').textContent = best ? `Your best on this level: ${best.toLocaleString()} · ${starText(levelStars(best))}` : '';
+  $('intro').classList.remove('hidden');
+}
+
+function openLevels() {
+  const n = levelCount(spots);
+  const progress = loadLevels();
+  const grid = $('levelsGrid');
+  grid.innerHTML = '';
+  for (let lv = 1; lv <= n; lv++) {
+    const open = isUnlocked(lv, progress);
+    const best = progress.best[String(lv)];
+    const a = document.createElement(open ? 'a' : 'span');
+    a.className = `lvl${open ? '' : ' locked'}${progress.cleared.includes(String(lv)) ? ' cleared' : ''}${lv === LEVEL && IS_LEVELS_REQUEST ? ' cur' : ''}`;
+    if (open) a.href = levelHref(lv);
+    a.innerHTML = `<b>${lv}</b><small>${open ? (best ? starText(levelStars(best)) : difficultyLabel(lv)) : '🔒'}</small>`;
+    a.setAttribute('aria-label', open ? `Level ${lv}, ${difficultyLabel(lv)}${best ? `, best ${best}` : ''}` : `Level ${lv}, locked`);
+    grid.append(a);
+  }
+  $('levelsSub').textContent = `${progress.cleared.length} of ${n} cleared. Levels open in order; the zoom starts tighter as you climb.`;
+  $('levelsOverlay').classList.remove('hidden');
+}
+$('levelsBtn').addEventListener('click', openLevels);
+$('levelsClose').addEventListener('click', () => $('levelsOverlay').classList.add('hidden'));
+$('levelsOverlay').addEventListener('click', (e) => { if (e.target === $('levelsOverlay')) $('levelsOverlay').classList.add('hidden'); });
+
+function showLevelResults(celebrate) {
+  document.body.classList.remove('playing');
+  $('game').classList.add('hidden');
+  $('intro').classList.add('hidden');
+  $('results').classList.remove('hidden');
+  const total = totalScore();
+  const stars = levelStars(total);
+  const progress = recordLevel(LEVEL, total, spots);
+  const n = levelCount(spots);
+  $('resultsDate').textContent = `Where in Burlington · Level ${LEVEL} · ${difficultyLabel(LEVEL)}`;
+  $('results').querySelector('h1').innerHTML = `LEVEL ${LEVEL}<br /><span>CLEARED</span>`;
+  $('totalScore').textContent = total.toLocaleString();
+  $('resultsRank').textContent = `${starText(stars)} · ${rankLine(total)}`;
+  $('emojiSummary').textContent = state.rounds.map((r) => emojiFor(r.d, r.solved ? r.stage : -1)).join(' ');
+  $('resultsStreak').textContent = progress.best[String(LEVEL)] > total ? `Best on this level: ${progress.best[String(LEVEL)].toLocaleString()}` : 'New best for this level';
+  $('lb').classList.add('hidden');
+  $('results').querySelector('.countdown').classList.add('hidden');
+  const next = $('levelNextBtn');
+  next.classList.remove('hidden');
+  if (LEVEL < n) { next.textContent = `NEXT: LEVEL ${LEVEL + 1} →`; next.href = levelHref(LEVEL + 1); }
+  else { next.textContent = 'YOU CLEARED THE LADDER · ALL LEVELS'; next.href = '#'; next.addEventListener('click', (e) => { e.preventDefault(); openLevels(); }); }
+  $('levelAllBtn').classList.remove('hidden');
+  if (celebrate) sound.runEnd(rankLine(total));
+}
+$('levelAllBtn').addEventListener('click', (e) => { e.preventDefault(); openLevels(); });
+
+// ------------------------------------------------------------ peek (newsletter insert)
+// ?p=<photo id>: the Wednesday edition's "guess, then tap to reveal" link.
+// Shows one photo at the insert's zoom, a reveal button, then the answer,
+// hint and credit. No pins, no points, nothing saved.
+
+function startPeek(id) {
+  const spot = spots.find((s) => s.file.split('/').pop().replace(/\.[a-z0-9]+$/i, '') === id);
+  const peek = $('peek');
+  $('intro').classList.add('hidden');
+  peek.classList.remove('hidden');
+  if (!spot) {
+    $('peekTitle').textContent = 'That photo is not in the game';
+    $('peekSub').textContent = 'The link may be from an old edition.';
+    $('peekFrame').classList.add('hidden');
+    $('peekRevealBtn').classList.add('hidden');
+    return;
+  }
+  const img = $('peekPhoto');
+  // same seed the insert script used, so the emailed crop and this one match
+  const f = focalPoint(spot, `insert:${/^\d{4}-\d{2}-\d{2}$/.test(params.get('d') || '') ? params.get('d') : LIVE_DATE}`);
+  img.src = `./${spot.file}`;
+  img.style.transformOrigin = `${f.x}% ${f.y}%`;
+  img.style.transform = 'scale(1.9)';
+  $('peekRevealBtn').addEventListener('click', () => {
+    img.style.transform = 'scale(1)';
+    $('peekRevealBtn').classList.add('hidden');
+    $('peekAnswer').classList.remove('hidden');
+    $('peekName').textContent = spot.name;
+    $('peekHint').textContent = spot.hint || '';
+    const attr = $('peekAttr');
+    attr.innerHTML = '';
+    if (spot.sourceUrl) {
+      attr.append('Photo: ');
+      const a = document.createElement('a'); a.href = spot.sourceUrl; a.target = '_blank'; a.rel = 'noopener'; a.textContent = spot.author || 'Unknown';
+      attr.append(a, ` · ${spot.license} · via Wikimedia Commons`);
+    }
+    sound.reveal(true, false);
+  }, { once: true });
+}
 
 // ------------------------------------------------------------ duel mode
 // The room payload carries one 32-bit seed for five photos from the full pool.

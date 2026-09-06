@@ -45,6 +45,7 @@
         <div>⭐ Nail it fully zoomed-in for a <b>1.5×</b> bonus</div>
       </div>
       <button class="cta" id="startBtn">PLAY TODAY'S ROUND</button>
+      <button class="chip levels-chip" id="levelsBtn" type="button">🪜 LEVELS</button>
       <div class="streak-line" id="introStreak"></div>
       <a class="tiny-link" href="./credits.html">Photo credits</a>
     </div>
@@ -124,8 +125,39 @@
       </div>
 
       <div class="countdown">Next round in <b id="countdown">–</b></div>
+      <a class="cta hidden" id="levelNextBtn" href="#">NEXT LEVEL →</a>
+      <a class="chip hidden" id="levelAllBtn" href="#">🪜 All levels</a>
       <a class="cta ghost" href="https://www.btownbrief.com/" target="_blank" rel="noopener">📰 Read the BTown Brief →</a>
       <a class="tiny-link" href="./credits.html">Photo credits</a>
+    </div>
+  </div>
+
+  <!-- peek: the Wednesday edition's "guess, then tap to reveal" link (?p=<photo id>) -->
+  <div id="peek" class="panel hidden">
+    <div class="panel-inner">
+      <div class="kicker">Btown Brief · Where in Btown?</div>
+      <h1 class="smaller" id="peekTitle">GUESS,<br /><span>THEN TAP</span></h1>
+      <p class="sub" id="peekSub">Say it out loud first. Then reveal.</p>
+      <div class="peek-frame" id="peekFrame"><img id="peekPhoto" alt="A zoomed-in detail of a Burlington building" draggable="false" /></div>
+      <button class="cta" id="peekRevealBtn">TAP TO REVEAL</button>
+      <div class="peek-answer hidden" id="peekAnswer">
+        <div class="peek-name" id="peekName"></div>
+        <p class="sub" id="peekHint"></p>
+        <div class="peek-attr" id="peekAttr"></div>
+        <a class="cta ghost" href="./">📍 Play today's five →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- levels picker -->
+  <div class="levels-overlay hidden" id="levelsOverlay" role="dialog" aria-label="Levels">
+    <div class="levels-card">
+      <button class="duel-close" id="levelsClose" aria-label="Close">&times;</button>
+      <div class="kicker">Btown Games · Levels</div>
+      <h2 class="levels-h">The ladder</h2>
+      <p class="sub" id="levelsSub"></p>
+      <div class="levels-grid" id="levelsGrid"></div>
+      <p class="levels-note">Same five photos for everyone on each level. Progress stays on this phone; the daily game and its streak are untouched.</p>
     </div>
   </div>
 
